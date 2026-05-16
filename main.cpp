@@ -1,16 +1,37 @@
 #include <iostream>
+#include <string>
+#include "watchman/HttpClient.h"
 
-// TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-int main() {
-    // TIP Press <shortcut actionId="RenameElement"/> when your caret is at the <b>lang</b> variable name to see how CLion can help you rename it.
-    auto lang = "C++";
-    std::cout << "Hello and welcome to " << lang << "!\n";
+constexpr auto VERSION = "1.0";
 
-    for (int i = 1; i <= 5; i++) {
-        // TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        std::cout << "i = " << i << std::endl;
+
+void print_help() {
+    std::cout << "watchman " << VERSION << std::endl;
+    std::cout << "uzycie: watchman [opcje]" << std::endl;
+    std::cout << "opcje: -h/--help, -v/--version" <<std::endl;
+}
+
+int main(const int argc, char* argv[]) {
+    if (argc<2) {
+        print_help();
+        return 1;
     }
-
-    return 0;
-    // TIP See CLion help at <a href="https://www.jetbrains.com/help/clion/">jetbrains.com/help/clion/</a>. Also, you can try interactive lessons for CLion by selecting 'Help | Learn IDE Features' from the main menu.
+    const std::string arg = argv[1];
+    if (arg == "-v" || arg =="--version") {
+        std::cout<< VERSION << std::endl;
+        return 0;
+    }
+    if (arg == "-h" || arg =="--help") {
+        print_help();
+        return 0;
+    }
+    try {
+        HttpClient client;
+        int status = client.get_status(arg);
+        std::cout << "sprawdzam: " << arg << std::endl;
+        std::cout << "status: " << status << std::endl;
+    } catch (const std::exception &e) {
+        std::cerr << "błąd! " << e.what() << std::endl;
+        return 1;
+    }
 }
