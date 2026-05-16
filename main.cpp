@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
-#include "watchman/HttpClient.h"
+#include "watchman/ServiceList.h"
+#include "watchman/Service.h"
 
 constexpr auto VERSION = "1.0";
 
@@ -26,10 +27,19 @@ int main(const int argc, char* argv[]) {
         return 0;
     }
     try {
-        HttpClient client;
-        int status = client.get_status(arg);
-        std::cout << "sprawdzam: " << arg << std::endl;
-        std::cout << "status: " << status << std::endl;
+        HttpService ser("test",arg);
+        CheckResult res = ser.check();
+        std::cout << ser.name() << ": "
+                    << (res.up ? "UP" : "DOWN")
+                    << " (status " << res.status << ")\n";
+        ServiceList list;
+        list.add(new HttpService("example", "https://example.com"));
+        list.add(new HttpService("google", "https://google.com"));
+
+        for (size_t i = 0; i < list.size(); ++i) {
+            CheckResult r = list[i]->check();
+            std::cout << list[i]->name() << ": " << (r.up ? "UP" : "DOWN") << "\n";
+        }
     } catch (const std::exception &e) {
         std::cerr << "błąd! " << e.what() << std::endl;
         return 1;

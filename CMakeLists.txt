@@ -9,6 +9,11 @@ find_package(CURL REQUIRED)
 add_executable(watchman
         main.cpp
         src/HttpClient.cpp
-        include/watchman/HttpClient.h)
+        src/Service.cpp
+        src/ServiceList.cpp
+        include/watchman/HttpClient.h
+        include/watchman/Service.h
+        include/watchman/CheckResult.h
+        include/watchman/ServiceList.h)
 target_include_directories(watchman PRIVATE include)
 target_link_libraries(watchman PRIVATE CURL::libcurl)
