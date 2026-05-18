@@ -14,6 +14,7 @@ add_executable(watchman
         src/util.cpp
         src/Config.cpp
         src/Monitor.cpp
+        src/DiscordNotifier.cpp
         include/watchman/HttpClient.h
         include/watchman/Service.h
         include/watchman/CheckResult.h
@@ -21,6 +22,7 @@ add_executable(watchman
         include/watchman/RingBuffer.h
         include/watchman/util.h
         include/watchman/Config.h
-        include/watchman/Monitor.h)
+        include/watchman/Monitor.h
+        include/watchman/DiscordNotifier.h)
 target_include_directories(watchman PRIVATE include)
 target_link_libraries(watchman PRIVATE CURL::libcurl)

@@ -7,6 +7,7 @@
 #include <chrono>
 #include <thread>
 #include "Config.h"
+#include "DiscordNotifier.h"
 
 struct ServiceState {
     std::chrono::steady_clock::time_point nextCheck;
@@ -15,6 +16,7 @@ struct ServiceState {
 
 class Monitor {
     Config& config_;
+    DiscordNotifier notifier_;
     std::vector<ServiceState> states_;
 public:
     Monitor(Config& config);

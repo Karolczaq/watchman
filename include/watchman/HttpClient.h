@@ -21,6 +21,8 @@ public:
     HttpClient& operator=(HttpClient &&other) noexcept;
 
     int get_status(const std::string &url);
+
+    void post(const std::string &url, const std::string& body);
 };
 
 #endif //WATCHMAN_HTTPCLIENT_H

@@ -51,3 +51,20 @@ int HttpClient::get_status(const std::string &url) {
     curl_easy_getinfo(handle_,CURLINFO_HTTP_CODE, &code);
     return static_cast<int>(code);
 }
+
+void HttpClient::post(const std::string& url, const std::string& body) {
+    curl_easy_setopt(handle_, CURLOPT_URL, url.c_str());
+    curl_easy_setopt(handle_, CURLOPT_POSTFIELDS, body.c_str());
+    curl_easy_setopt(handle_, CURLOPT_WRITEFUNCTION, discard);
+    curl_easy_setopt(handle_, CURLOPT_TIMEOUT, 5L);
+
+    struct curl_slist* headers = nullptr;
+    headers = curl_slist_append(headers, "Content-Type: application/json");
+    curl_easy_setopt(handle_, CURLOPT_HTTPHEADER, headers);
+
+    CURLcode rc = curl_easy_perform(handle_);
+    curl_slist_free_all(headers);
+
+    if (rc != CURLE_OK)
+        throw std::runtime_error(curl_easy_strerror(rc));
+}
