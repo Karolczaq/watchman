@@ -28,6 +28,24 @@ webhook = https://discord.com/api/webhooks/...
 
 Help: `./build/watchman --help`
 
+## Docker
+
+Build and run with Docker:
+
+  ```bash
+  docker build -t watchman .
+  docker run -d --name watchman --restart unless-stopped \
+      -v $(pwd)/config:/config:ro \
+      watchman
+  ```
+The config file is **not** baked into the image — mount your local
+`config/` directory at `/config`. Edit `config/services.ini` on the host
+and restart the container to apply changes:
+
+  ```bash
+  docker restart watchman
+  ```
+
 ## How it works
 - each service is pinged once per interval
 - service is marked as DOWN if three consecutive pings fail
