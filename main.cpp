@@ -9,9 +9,18 @@ constexpr auto VERSION = "1.0";
 
 
 void print_help() {
-    std::cout << "watchman " << VERSION << std::endl;
-    std::cout << "uzycie: watchman [opcje]" << std::endl;
-    std::cout << "opcje: -h/--help, -v/--version" <<std::endl;
+    std::cout << "\nwatchman " << VERSION << " - monitor usług póki co HTTP \n"<<  std::endl;
+    std::cout << "UZYCIE:\n"
+          "  watchman <config-path>\n"
+          "  watchman -h | --help\n"
+          "  watchman -v | --version\n\n"
+          "FORMAT CONFIGU (plik .ini):\n"
+          "  # linie zaczynajace sie od # to komentarze\n"
+          "  <url>  <interwal_w_sekundach>     # usluga do monitorowania\n"
+          "  webhook = <url-webhooka-discord>  # opcjonalny webhook\n\n"
+          "PRZYKLAD:\n"
+          "  https://example.com  5\n"
+          "  webhook = https://discord.com/api/webhooks/...\n";
 }
 
 int main(const int argc, char* argv[]) {
