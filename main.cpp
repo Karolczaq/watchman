@@ -3,6 +3,7 @@
 #include "watchman/ServiceList.h"
 #include "watchman/Service.h"
 #include "watchman/Config.h"
+#include "watchman/Monitor.h"
 
 constexpr auto VERSION = "1.0";
 
@@ -37,6 +38,9 @@ int main(const int argc, char* argv[]) {
             Service* s = config.services[i];
             std::cout << " " << s->name() << " (interval " << s->interval() << "s)" << std::endl;
         }
+
+        Monitor monitor(config);
+        monitor.start();
 
 
     } catch (const std::exception &e) {

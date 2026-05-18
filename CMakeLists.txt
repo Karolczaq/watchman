@@ -13,12 +13,14 @@ add_executable(watchman
         src/ServiceList.cpp
         src/util.cpp
         src/Config.cpp
+        src/Monitor.cpp
         include/watchman/HttpClient.h
         include/watchman/Service.h
         include/watchman/CheckResult.h
         include/watchman/ServiceList.h
         include/watchman/RingBuffer.h
         include/watchman/util.h
-        include/watchman/Config.h)
+        include/watchman/Config.h
+        include/watchman/Monitor.h)
 target_include_directories(watchman PRIVATE include)
 target_link_libraries(watchman PRIVATE CURL::libcurl)
