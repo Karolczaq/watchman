@@ -5,6 +5,7 @@
 #ifndef WATCHMAN_MONITOR_H
 #define WATCHMAN_MONITOR_H
 #include <chrono>
+#include <vector>
 #include <thread>
 #include "Config.h"
 #include "DiscordNotifier.h"
