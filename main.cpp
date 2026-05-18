@@ -2,6 +2,7 @@
 #include <string>
 #include "watchman/ServiceList.h"
 #include "watchman/Service.h"
+#include "watchman/Config.h"
 
 constexpr auto VERSION = "1.0";
 
@@ -27,19 +28,17 @@ int main(const int argc, char* argv[]) {
         return 0;
     }
     try {
-        HttpService ser("test",arg);
-        CheckResult res = ser.check();
-        std::cout << ser.name() << ": "
-                    << (res.up ? "UP" : "DOWN")
-                    << " (status " << res.status << ")\n";
-        ServiceList list;
-        list.add(new HttpService("example", "https://example.com"));
-        list.add(new HttpService("google", "https://google.com"));
+        Config config;
+        config.load(arg);
 
-        for (size_t i = 0; i < list.size(); ++i) {
-            CheckResult r = list[i]->check();
-            std::cout << list[i]->name() << ": " << (r.up ? "UP" : "DOWN") << "\n";
+        std::cout<< "watchman " << VERSION << ", loaded " << config.services.size() << " services " << std::endl;
+
+        for (size_t i = 0; i< config.services.size(); i++) {
+            Service* s = config.services[i];
+            std::cout << " " << s->name() << " (interval " << s->interval() << "s)" << std::endl;
         }
+
+
     } catch (const std::exception &e) {
         std::cerr << "błąd! " << e.what() << std::endl;
         return 1;

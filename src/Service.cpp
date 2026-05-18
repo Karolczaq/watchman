@@ -5,7 +5,7 @@
 #include "watchman/Service.h"
 #include "watchman/HttpClient.h"
 
-HttpService::HttpService(std::string name, std::string url): Service(name), url_(url){};
+HttpService::HttpService(std::string name, std::string url, int interval): Service(name,interval), url_(url){};
 
 CheckResult HttpService::check() {
     try {
@@ -18,8 +18,34 @@ CheckResult HttpService::check() {
     }
 }
 
-Service::Service(const std::string &name):name_(name) {}
-
 Service* HttpService::clone() const {
     return new HttpService(*this);
+}
+
+void Service::recordResult(bool up) {
+    history_.push(up);
+}
+
+bool Service::stableDown() const {
+    if (history_.size() < history_.capacity()) {
+        return false;
+    }
+    for (bool up: history_) {
+        if (up) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool Service::stableUp() const {
+    if (history_.size() < history_.capacity()) {
+        return false;
+    }
+    for (bool up: history_) {
+        if (!up) {
+            return false;
+        }
+    }
+    return true;
 }
